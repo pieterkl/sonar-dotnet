@@ -1,4 +1,4 @@
-/*
+﻿/*
  * SonarAnalyzer for .NET
  * Copyright (C) 2015-2019 SonarSource SA
  * mailto: contact AT sonarsource DOT com
@@ -34,10 +34,16 @@ namespace SonarAnalyzer.Rules.CSharp
     public sealed class ConsumeValueTaskCorrectly : SonarDiagnosticAnalyzer
     {
         internal const string DiagnosticId = "S5034";
-        private const string MessageFormat = "";
+
+        // 'await', 'AsTask', 'Result' and '.GetAwaiter().GetResult()' should be called only once on a ValueTask
+        private const string MessageFormat = " Refactor this 'ValueTask' usage to use '{0}' only once.";
+
+        // This should be called only when 'readTask.IsCompletedSuccessfully' is called before
+        private const string MessageFormatResult = " Refactor this 'ValueTask' usage to use '{0}' only if the operation has completed.";
 
         private static readonly DiagnosticDescriptor rule =
             DiagnosticDescriptorBuilder.GetDescriptor(DiagnosticId, MessageFormat, RspecStrings.ResourceManager);
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(rule);
 
         protected override void Initialize(SonarAnalysisContext context)
