@@ -1,4 +1,4 @@
-/*
+﻿/*
  * SonarAnalyzer for .NET
  * Copyright (C) 2015-2019 SonarSource SA
  * mailto: contact AT sonarsource DOT com
@@ -21,6 +21,9 @@
 extern alias csharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using csharp::SonarAnalyzer.Rules.CSharp;
+using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SonarAnalyzer.UnitTest.Rules
 {
@@ -32,8 +35,14 @@ namespace SonarAnalyzer.UnitTest.Rules
         public void ConsumeValueTaskCorrectly()
         {
             Verifier.VerifyAnalyzer(@"TestCases\ConsumeValueTaskCorrectly.cs",
-                new ConsumeValueTaskCorrectly());
+                new ConsumeValueTaskCorrectly(),
+                additionalReferences: GetReferences());
         }
+
+        private static IEnumerable<MetadataReference> GetReferences() =>
+            Enumerable.Empty<MetadataReference>()
+                .Concat(FrameworkMetadataReference.SystemThreadingTasks)
+                .Concat(NuGetMetadataReference.SystemThreadingTasksExtensions("4.0.0"));
     }
 }
 
