@@ -1,6 +1,6 @@
 {
   "title": "Getters and setters should access the expected fields",
-  "type": "BUG",
+  "type": "CODE_SMELL",
   "status": "ready",
   "remediation": {
     "func": "Constant\/Issue",
